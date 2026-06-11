@@ -80,6 +80,8 @@ def main():
     log_root_path = os.path.join("logs", "rsl_rl", agent_cfg.experiment_name)
     log_root_path = os.path.abspath(log_root_path)
     print(f"[INFO] Loading experiment from directory: {log_root_path}")
+
+    #UPDATE --> The version of IsaacLab we have does not support the get_published_pretrained_checkpoint function, so we will directly use the checkpoint path provided or check the logs directory. 
     # if args_cli.use_pretrained_checkpoint:
     #     resume_path = get_published_pretrained_checkpoint("rsl_rl", args_cli.task)
     #     if not resume_path:

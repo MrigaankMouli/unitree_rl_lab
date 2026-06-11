@@ -42,6 +42,7 @@ TRAKR_CFG = TrakrArticulationCfg(
     spawn=TrakrUsdFileCfg(
         usd_path="/home/bhuvan/projects/addverb/mrigaank/mrigaank/usd_files_issac_sim/trakr_imu.usd",
     ),
+    #Joint Positions and Default Standing Positionswere taken from the trakr_legged_rl repository
     init_state=ArticulationCfg.InitialStateCfg(
         pos=(0.0, 0.0, 0.255),
         joint_pos={
@@ -53,6 +54,8 @@ TRAKR_CFG = TrakrArticulationCfg(
         },
         joint_vel={".*": 0.0},
     ),
+    #Actuator parameters were taken from the trakr_legged_rl repository
+    #Joint Names were taken from the trakr_imu.usd file by inspecting the Stage in IsaacSim
     actuators={
         "base_legs": DCMotorCfg(
             joint_names_expr=[".*_adduction", ".*_hip", ".*_knee"],
@@ -64,6 +67,7 @@ TRAKR_CFG = TrakrArticulationCfg(
             friction=1.0,
         ),
     },
+    #Joint Names were taken from the trakr_imu.usd file by inspecting the Stage in IsaacSim
         joint_sdk_names=[
         "LB_adduction", "LB_hip", "LB_knee",
         "LF_adduction", "LF_hip", "LF_knee",

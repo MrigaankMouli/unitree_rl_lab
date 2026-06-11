@@ -19,6 +19,7 @@ sys.path.pop(0)
 
 tasks = []
 for task_spec in gym.registry.values():
+    #previously only added Unitree tasks, updated to include Trakr tasks
     if ("Unitree" in task_spec.id or "Trakr" in task_spec.id) and "Isaac" not in task_spec.id:
         tasks.append(task_spec.id)
 

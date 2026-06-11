@@ -25,7 +25,7 @@ def energy(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg = SceneEntityCfg("r
 
     qvel = asset.data.joint_vel[:, asset_cfg.joint_ids]
     qfrc = asset.data.applied_torque[:, asset_cfg.joint_ids]
-    return torch.sum(torch.abs(qvel) * torch.abs(qfrc), dim=-1)
+    return torch.sum(torch.abs(qvel) * torch.abs(qfrc), + torch.pow(torch.abs(qfrc), 0.0002), dim=-1) # penalizing high torques more to encourage smoother motions --> given in the trakr_legged_rl repository
 
 
 def stand_still(
