@@ -19,6 +19,8 @@ class TrakrArticulationCfg(ArticulationCfg):
     soft_joint_pos_limit_factor = 0.9
 
 
+#Rigid body properties were taken from the trakr_legged_rl repository
+#Articulation Properties were kept the same as unitree_go2
 @configclass
 class TrakrUsdFileCfg(sim_utils.UsdFileCfg):
     activate_contact_sensors = True
@@ -40,7 +42,7 @@ TRAKR_CFG = TrakrArticulationCfg(
     #     asset_path=f"{UNITREE_ROS_DIR}/robots/go2_description/urdf/go2_description.urdf",
     # ),
     spawn=TrakrUsdFileCfg(
-        usd_path="/home/bhuvan/projects/addverb/mrigaank/mrigaank/usd_files_issac_sim/trakr_imu.usd",
+        usd_path="/home/mrigaank/addverb/mrigaank/mrigaank/usd_files_issac_sim/trakr_imu.usd",
     ),
     #Joint Positions and Default Standing Positionswere taken from the trakr_legged_rl repository
     init_state=ArticulationCfg.InitialStateCfg(

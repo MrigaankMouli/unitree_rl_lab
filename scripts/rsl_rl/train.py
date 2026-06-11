@@ -103,6 +103,7 @@ from isaaclab.envs import (
     ManagerBasedRLEnvCfg,
     multi_agent_to_single_agent,
 )
+from isaaclab.utils.assets import retrieve_file_path
 from isaaclab.utils.dict import print_dict
 from isaaclab.utils.io import dump_yaml
 from isaaclab_rl.rsl_rl import RslRlOnPolicyRunnerCfg, RslRlVecEnvWrapper
@@ -164,7 +165,10 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
 
     # save resume path before creating a new log_dir
     if agent_cfg.resume or agent_cfg.algorithm.class_name == "Distillation":
-        resume_path = get_checkpoint_path(log_root_path, agent_cfg.load_run, agent_cfg.load_checkpoint)
+        if args_cli.checkpoint:
+            resume_path = retrieve_file_path(args_cli.checkpoint)
+        else:
+            resume_path = get_checkpoint_path(log_root_path, agent_cfg.load_run, agent_cfg.load_checkpoint)
 
     # wrap for video recording
     if args_cli.video:

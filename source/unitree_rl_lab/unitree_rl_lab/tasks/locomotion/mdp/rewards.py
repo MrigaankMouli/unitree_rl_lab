@@ -25,7 +25,7 @@ def energy(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg = SceneEntityCfg("r
 
     qvel = asset.data.joint_vel[:, asset_cfg.joint_ids]
     qfrc = asset.data.applied_torque[:, asset_cfg.joint_ids]
-    return torch.sum(torch.abs(qvel) * torch.abs(qfrc), + torch.pow(torch.abs(qfrc), 0.0002), dim=-1) # penalizing high torques more to encourage smoother motions --> given in the trakr_legged_rl repository
+    return torch.sum(torch.abs(qvel) * torch.abs(qfrc) + torch.pow(torch.abs(qfrc), 0.0002), dim=-1) # penalizing high torques more to encourage smoother motions --> given in the trakr_legged_rl repository
 
 
 def stand_still(
@@ -135,6 +135,23 @@ def feet_too_near(
     feet_pos = asset.data.body_pos_w[:, asset_cfg.body_ids, :]
     distance = torch.norm(feet_pos[:, 0] - feet_pos[:, 1], dim=-1)
     return (threshold - distance).clamp(min=0)
+
+def foot_slip_penalty(
+    env: ManagerBasedRLEnv,
+    sensor_cfg: SceneEntityCfg,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+):
+    """Penalize foot slip """
+    asset: Articulation = env.scene[asset_cfg.name]
+    contact_sensor: ContactSensor = env.scene.sensors[sensor_cfg.name]
+
+    contact = contact_sensor.data.current_contact_time[:, sensor_cfg.body_ids] > 0
+    foot_vel_xy = torch.norm(
+        asset.data.body_lin_vel_w[:, asset_cfg.body_ids, :2],
+        dim=-1,
+    )
+
+    return torch.sum(foot_vel_xy * contact.float(), dim=1)
 
 
 def feet_contact_without_cmd(
